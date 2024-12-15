@@ -1,0 +1,223 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				},
+				{
+					"build" : "build-pqxx",
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-build-pqxx-Debug-38ce937927e74233a2a1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "libpqxx-7.9.2"
+				},
+				{
+					"build" : "build-pqxx/src",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-build-pqxx.src-Debug-a66464771a6f23d31e4e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "libpqxx-7.9.2/src",
+					"targetIndexes" : 
+					[
+						4,
+						5,
+						6
+					]
+				},
+				{
+					"build" : "build-pqxx/include",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-build-pqxx.include-Debug-ae7cccc6b1aaafbb2079.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "libpqxx-7.9.2/include"
+				},
+				{
+					"build" : "build-pqxx/test",
+					"jsonFile" : "directory-build-pqxx.test-Debug-bc682d7644f4e072f6e5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "libpqxx-7.9.2/test",
+					"targetIndexes" : 
+					[
+						7,
+						8,
+						9
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Database_1",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4
+					],
+					"name" : "libpqxx",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Database_1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Database_1-Debug-3d7d7fdc39236ea356ed.json",
+					"name" : "Database_1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Lab6::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Lab6-Debug-adbb1c76975cc9cfdf7f.json",
+					"name" : "Lab6",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Lab6_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Lab6_autogen-Debug-e1a66fc7cc47524365d9.json",
+					"name" : "Lab6_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Lab6_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Lab6_autogen_timestamp_deps-Debug-eda951930ee8253dcfc4.json",
+					"name" : "Lab6_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "pqxx::@ded9971ed639e414d3a4",
+					"jsonFile" : "target-pqxx-Debug-20e99355277e81efda05.json",
+					"name" : "pqxx",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "pqxx_autogen::@ded9971ed639e414d3a4",
+					"jsonFile" : "target-pqxx_autogen-Debug-808a3be40eac4111165f.json",
+					"name" : "pqxx_autogen",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "pqxx_autogen_timestamp_deps::@ded9971ed639e414d3a4",
+					"jsonFile" : "target-pqxx_autogen_timestamp_deps-Debug-11253738cf6f2d74a8dc.json",
+					"name" : "pqxx_autogen_timestamp_deps",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "runner::@81e2c75a6ff29b583f40",
+					"jsonFile" : "target-runner-Debug-1f253f43b6fe48be2292.json",
+					"name" : "runner",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "runner_autogen::@81e2c75a6ff29b583f40",
+					"jsonFile" : "target-runner_autogen-Debug-a1435e925a2533a49728.json",
+					"name" : "runner_autogen",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "runner_autogen_timestamp_deps::@81e2c75a6ff29b583f40",
+					"jsonFile" : "target-runner_autogen_timestamp_deps-Debug-eb3da6d56ba900a9ac45.json",
+					"name" : "runner_autogen_timestamp_deps",
+					"projectIndex" : 1
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/CLionProjects/Database_1/cmake-build-debug",
+		"source" : "D:/CLionProjects/Database_1"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

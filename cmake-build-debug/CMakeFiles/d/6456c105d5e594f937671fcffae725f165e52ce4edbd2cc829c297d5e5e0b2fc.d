@@ -1,0 +1,31 @@
+build-pqxx/src/pqxx_autogen/timestamp: \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/libpqxx.pc.in \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/CMakeLists.txt \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/array.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/binarystring.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/blob.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/connection.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/cursor.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/encodings.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/errorhandler.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/except.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/field.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/largeobject.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/notification.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/params.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/pipeline.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/result.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/robusttransaction.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/row.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/sql_cursor.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/strconv.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/stream_from.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/stream_to.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/subtransaction.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/time.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/transaction.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/transaction_base.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/util.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/version.cxx \
+  D:/CLionProjects/Database_1/libpqxx-7.9.2/src/wait.cxx \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3/bin/cmake/win/bin/cmake.exe

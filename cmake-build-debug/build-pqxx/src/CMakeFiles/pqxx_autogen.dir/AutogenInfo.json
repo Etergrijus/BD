@@ -1,0 +1,187 @@
+{
+	"BUILD_DIR" : "D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/src/pqxx_autogen",
+	"CMAKE_BINARY_DIR" : "D:/CLionProjects/Database_1/cmake-build-debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/src",
+	"CMAKE_CURRENT_SOURCE_DIR" : "D:/CLionProjects/Database_1/libpqxx-7.9.2/src",
+	"CMAKE_EXECUTABLE" : "C:/Program Files/JetBrains/CLion 2022.3/bin/cmake/win/bin/cmake.exe",
+	"CMAKE_LIST_FILES" : 
+	[
+		"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/CMakeLists.txt",
+		"D:/CLionProjects/Database_1/libpqxx-7.9.2/libpqxx.pc.in"
+	],
+	"CMAKE_SOURCE_DIR" : "D:/CLionProjects/Database_1",
+	"DEP_FILE" : "D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/src/pqxx_autogen/deps",
+	"DEP_FILE_RULE_NAME" : "pqxx_autogen/timestamp",
+	"HEADERS" : [],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/src/pqxx_autogen/include",
+	"MOC_COMPILATION_FILE" : "D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/src/pqxx_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : [],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/src",
+		"D:/CLionProjects/Database_1/libpqxx-7.9.2/src",
+		"D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/include",
+		"D:/CLionProjects/Database_1/libpqxx-7.9.2/include",
+		"C:/Program Files/PostgreSQL/16/include",
+		"C:/Program Files/PostgreSQL/16/include/server",
+		"C:/msys64/mingw64/include/c++/14.1.0",
+		"C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32",
+		"C:/msys64/mingw64/include/c++/14.1.0/backward",
+		"C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include",
+		"C:/msys64/mingw64/include",
+		"C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include-fixed"
+	],
+	"MOC_MACRO_NAMES" : 
+	[
+		"Q_OBJECT",
+		"Q_GADGET",
+		"Q_NAMESPACE",
+		"Q_NAMESPACE_EXPORT",
+		"Q_GADGET_EXPORT",
+		"Q_ENUM_NS"
+	],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"C:/msys64/mingw64/bin/c++.exe",
+		"-dM",
+		"-E",
+		"-c",
+		"C:/Program Files/JetBrains/CLion 2022.3/bin/cmake/win/share/cmake-3.24/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/src/pqxx_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 6,
+	"PARSE_CACHE_FILE" : "D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/src/CMakeFiles/pqxx_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "C:/Qt/6.7.2/mingw_64/./bin/moc.exe",
+	"QT_UIC_EXECUTABLE" : "C:/Qt/6.7.2/mingw_64/./bin/uic.exe",
+	"QT_VERSION_MAJOR" : 6,
+	"QT_VERSION_MINOR" : 7,
+	"SETTINGS_FILE" : "D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/src/CMakeFiles/pqxx_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[ "D:/CLionProjects/Database_1/libpqxx-7.9.2/src/array.cxx", "MU", null ],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/binarystring.cxx",
+			"MU",
+			null
+		],
+		[ "D:/CLionProjects/Database_1/libpqxx-7.9.2/src/blob.cxx", "MU", null ],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/connection.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/cursor.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/encodings.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/errorhandler.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/except.cxx",
+			"MU",
+			null
+		],
+		[ "D:/CLionProjects/Database_1/libpqxx-7.9.2/src/field.cxx", "MU", null ],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/largeobject.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/notification.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/params.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/pipeline.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/result.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/robusttransaction.cxx",
+			"MU",
+			null
+		],
+		[ "D:/CLionProjects/Database_1/libpqxx-7.9.2/src/row.cxx", "MU", null ],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/sql_cursor.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/strconv.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/stream_from.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/stream_to.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/subtransaction.cxx",
+			"MU",
+			null
+		],
+		[ "D:/CLionProjects/Database_1/libpqxx-7.9.2/src/time.cxx", "MU", null ],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/transaction.cxx",
+			"MU",
+			null
+		],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/transaction_base.cxx",
+			"MU",
+			null
+		],
+		[ "D:/CLionProjects/Database_1/libpqxx-7.9.2/src/util.cxx", "MU", null ],
+		[
+			"D:/CLionProjects/Database_1/libpqxx-7.9.2/src/version.cxx",
+			"MU",
+			null
+		],
+		[ "D:/CLionProjects/Database_1/libpqxx-7.9.2/src/wait.cxx", "MU", null ]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"VERBOSITY" : 0
+}
