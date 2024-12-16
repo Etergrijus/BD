@@ -1,14 +1,15 @@
 #include <QScrollArea>
 #include <QTableWidgetItem>
 #include <QHeaderView>
+#include <QMessageBox>
+
+#include <iostream>
 
 #include "mainwindow.h"
 #include "ui_MainWindow.h"
 
-
 MainWindow::MainWindow(const std::string& dataBaseParams, QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::MainWindow),
-        c(dataBaseParams), w(c) {
+        QMainWindow(parent), ui(new Ui::MainWindow), db(dataBaseParams) {
     ui->setupUi(this);
 
     this->setMinimumSize(1000, 700);
@@ -16,58 +17,6 @@ MainWindow::MainWindow(const std::string& dataBaseParams, QWidget *parent) :
 
     mainWidget = new QWidget(this);
     this->setCentralWidget(mainWidget);
-
-    queryInfo = {{0, {"SELECT * FROM qualifications;", {"ID", "Description"}}},
-
-                 {1, {"SELECT * FROM contact_details", {"ID", "Phone", "FCs"}}},
-
-                 {2, {"SELECT e.id, phone, fcs FROM executors e\n"
-                      "JOIN\n"
-                      "contact_details cd ON cd.id = e.contact_details_id;", {"ID", "Phone", "FCs"}}},
-
-                 {3, {"SELECT w.title, w.description, w.complexity, ws.season_number\n"
-                      "FROM works w\n"
-                      "JOIN works_seasonality ws on w.title = ws.work_title;",
-                      {"title", "Description", "Complexity", "Season number"}}},
-
-                 {4, {"SELECT * FROM home_ownerships;", {"Address", "Building Parameters",
-                                                                                     "Additional Info"}}},
-                 {5, {"SELECT t.id, t.age, t.marital_status, cd.phone,\n"
-                      "cd.fcs, t.flat_number, t.flat_owner FROM tenants t\n"
-                      "JOIN tenants_list tl on t.id = tl.tenant_id\n"
-                      "JOIN contact_details cd on cd.id = t.contact_details_id;",
-                      {"ID", "Age", "Marital Status", "Phone", "FCs", "Flat Number", "Flat Owner"}}},
-
-                 {6, {"SELECT td.id,\n"
-                      "t.id,\n"
-                      "td.water_debt_size,\n"
-                      "td.gas_debt_size,\n"
-                      "td.electricity_debt_size\n"
-                      "FROM total_debts td\n"
-                      "JOIN tenants t on t.id = td.tenant_id;", {"ID", "Tenant ID", "Water Debt Size",
-                                                                 "Gas Debt Size", "Electricity Debt Size"}}},
-
-                 {7, {"SELECT r.id, r.urgency, r.description, ho.address, r.work_title\n"
-                      "FROM requests r\n"
-                      "JOIN home_ownerships ho ON r.home_ownership_address = ho.address\n"
-                      "JOIN works w on w.title = r.work_title;", {"ID", "Urgency", "Description",
-                                                                  "Address", "Work Title"}}},
-                 {8, {"SELECT e.executor_id,\n"
-                      "COUNT(s.season_number) AS total_seasons\n"
-                      "FROM executors_list e\n"
-                      "JOIN\n"
-                      "works w ON e.work_title = w.title\n"
-                      "JOIN\n"
-                      "works_seasonality s ON w.title = s.work_title\n"
-                      "GROUP BY e.executor_id ORDER BY e.executor_id;", {"Executor ID", "Count Of Seasons"}}},
-                 {9, {"SELECT *\n"
-                       "FROM total_debts\n"
-                       "WHERE total_debts.water_debt_size != 0\n"
-                       "OR total_debts.gas_debt_size != 0\n"
-                       "OR total_debts.electricity_debt_size != 0\n"
-                       "ORDER BY water_debt_size DESC;", {"ID", "Tenant ID", "Water Debt Size",
-                                                          "Gas Debt Size", "Electricity Debt Size"}}}
-    };
 
     comboBox = new QComboBox;
 
@@ -92,6 +41,9 @@ MainWindow::MainWindow(const std::string& dataBaseParams, QWidget *parent) :
                          "QTableWidget::item { border: 1px solid black; }"
                          "QHeaderView::section { background-color: lightgray; }");
     table->setWordWrap(true);
+    connect(table, &QTableWidget::itemDoubleClicked, this, &MainWindow::onItemDoubleClick);
+    connect(table, &QTableWidget::itemChanged, this, &MainWindow::updateDataBase);
+
 
     auto scrollArea = new QScrollArea;
     scrollArea->setWidgetResizable(true);
@@ -105,20 +57,47 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::getPrimaryKeys() {
-    std::string queryPrimaryKeys = "SELECT kcu.ordinal_position\n"
+QStringList MainWindow::getPrimaryKeys() {
+    QStringList primaryKeysCols;
+
+    std::string queryPrimaryKeys = "SELECT kcu.column_name\n"
                                    "FROM information_schema.table_constraints AS tc\n"
                                    "         JOIN information_schema.key_column_usage AS kcu\n"
                                    "              ON kcu.constraint_name = tc.constraint_name\n"
-                                   "WHERE tc.table_name =" + table.
+                                   "WHERE tc.table_name ='" + codesOfTables[tableIndex]
+                                   + "' AND tc.constraint_type = 'PRIMARY KEY'\n"
+                                     "ORDER BY kcu.column_name;";
 
+    auto r = db.selectPrintQuery(queryPrimaryKeys);
+    r.for_each([&primaryKeysCols] (const std::string& colName) {
+        primaryKeysCols.append(QString::fromStdString(colName));
+    });
+
+    return primaryKeysCols;
+}
+
+QStringList MainWindow::getBoolCols() {
+    QStringList booleanColumns;
+    // Выполняем SQL-запрос для получения информации о столбцах
+    std::string boolColsQuery = "SELECT column_name FROM information_schema.columns\n"
+                                "WHERE table_name = '" + codesOfTables[tableIndex] + "' AND data_type = 'boolean'";
+
+    auto r = db.selectPrintQuery(boolColsQuery);
+    r.for_each([&booleanColumns] (const std::string& colName) {
+        booleanColumns.append(QString::fromStdString(colName));
+    });
+
+    return booleanColumns;
 }
 
 void MainWindow::makeTable(int index) {
-    table->setColumnCount(queryInfo[index].second.size());
-    table->setHorizontalHeaderLabels(queryInfo[index].second);
+    tableIndex = index;
 
-    auto r = w.exec(queryInfo[index].first);
+    table->setColumnCount(queryInfo[tableIndex].second.size());
+    table->setHorizontalHeaderLabels(queryInfo[tableIndex].second);
+
+    //auto r = w.exec(queryInfo[tableIndex].first);
+    auto r = db.selectPrintQuery(queryInfo[tableIndex].first);
     table->setRowCount(r.size());
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -126,6 +105,16 @@ void MainWindow::makeTable(int index) {
     for (int rowNum = 0; rowNum < table->rowCount(); rowNum++) {
         pqxx::row row = r[rowNum];
 
+        auto lockedCols = getPrimaryKeys();
+        //Если первичные ключи не найдены - мы считаем данную
+        //таблицу таблицей производного запроса. Такие таблицы нельзя изменять,
+        //они зависят от основных таблиц БД
+/*        if (lockedCols.empty()) {
+            for (auto i = 0; i < row.size(); i++)
+                lockedCols.push_back(i);
+        }*/
+
+        auto boolCols = getBoolCols();
 
         for (int colNum = 0; colNum < table->columnCount(); colNum++) {
             pqxx::field field = row[colNum];
@@ -137,13 +126,149 @@ void MainWindow::makeTable(int index) {
                 continue;
             }
 
+            //Получаем строку из pqxx-запроса
             auto preStr = field.as<std::string>();
+            //Напрямую из pqxx::field в QString записать значение нельзя, поэтому и создаём
+            //переменную preStr
             QString str = QString::fromStdString(preStr);
             auto item = new QTableWidgetItem(str);
-            if (colNum == 0)
+
+            //Проверяем, является ли столбец имеющим булевы значения,
+            //чтобы заменить "t" и "f" на более понятное представление
+            if (boolCols.contains(columnMatching[tableIndex][colNum])) {
+                if (item->text() == "t")
+                    item->setText("True");
+                else
+                    item->setText("False");
+            }
+
+            //Проверяем, не является ли столбец соответствующим первичному ключу
+            if (lockedCols.contains(columnMatching[tableIndex][colNum]))
+                //Если является - то его делаем read-only
                 item->setFlags(item->flags() ^ Qt::ItemIsEditable);
             item->setTextAlignment(Qt::AlignCenter);
             table->setItem(rowNum, colNum, item);
         }
     }
 }
+
+void MainWindow::onItemDoubleClick(QTableWidgetItem *item) {
+    savedItemText = item->text();
+}
+
+void MainWindow::updateDataBase(QTableWidgetItem *item) {
+    /*pqxx::work txn(c);
+
+    int row = item->row();
+    int col = item->column();
+    QString newValue = item->text();
+
+    QString id = table->item(row, 0)->text();
+    QString columnName = queryInfo[tableIndex].second[col];
+
+    bool isNumeric;
+    int intNewValue = newValue.toInt(&isNumeric);
+
+    QString query;
+    try {
+        if (newValue == "True" || newValue == "true")
+            query = QString("UPDATE %1 SET %2 = TRUE WHERE id = %3").arg(
+                    QString::fromStdString(codesOfTables[tableIndex]), columnName, id);
+        else if (newValue == "False" || newValue ==  "false")
+            query = QString("UPDATE %1 SET %2 = FALSE WHERE id = %3").arg(
+                    QString::fromStdString(codesOfTables[tableIndex]), columnName, id);
+        else if (isNumeric)
+            query = QString("UPDATE %1 SET %2 = %3 WHERE id = %4").arg(
+                    QString::fromStdString(codesOfTables[tableIndex]), columnName, newValue, id);
+        else
+            query = QString("UPDATE %1 SET %2 = %3 WHERE id = %4").arg(
+                    QString::fromStdString(codesOfTables[tableIndex]), columnName, newValue, id);
+
+        txn.exec(query.toStdString());
+        txn.commit();
+    } catch (const std::exception &e) {
+        // Обработка исключений
+        //std::cerr << "Ошибка при обновлении данных: " << e.what() << std::endl;
+        txn.abort();
+        item->setText(savedItemText);
+        QMessageBox::warning(this, "Ошибка", "Не удалось обновить данные: \n" + QString::fromStdString(e.what()));
+    }*/
+
+}
+
+
+
+/*
+int row = item->row();
+int column = item->column();
+QString newValue = item->text();
+
+// Предположим, что у нас есть уникальный идентификатор в первой колонке
+QString id = tableWidget->item(row, 0)->text();
+QString columnName = getColumnName(column); // Получаем имя столбца
+
+QString query;
+
+private slots:
+void onItemChanged(QTableWidgetItem *item) {
+    int row = item->row();
+    int column = item->column();
+    QString newValue = item->text();
+
+    // Предположим, что у нас есть уникальный идентификатор в первой колонке
+    QString id = tableWidget->item(row, 0)->text();
+    QString columnName = getColumnName(column); // Получаем имя столбца
+
+    QString query;
+
+    // Проверяем, является ли новое значение числом
+    bool isNumeric;
+    int intValue = newValue.toInt(&isNumeric); // Попробуем преобразовать в целое число
+
+    try {
+        if (newValue == "true" || newValue == "1") {
+            query = QString("UPDATE tenants SET %1 = TRUE WHERE id = %2").arg(columnName, id);
+        } else if (newValue == "false" || newValue == "0") {
+            query = QString("UPDATE tenants SET %1 = FALSE WHERE id = %2").arg(columnName, id);
+        } else if (isNumeric) {
+            query = QString("UPDATE tenants SET %1 = %2 WHERE id = %3").arg(columnName, newValue, id);
+        } else {
+            query = QString("UPDATE tenants SET %1 = '%2' WHERE id = %3").arg(columnName, newValue, id);
+        }
+
+        dbManager.updateData(query.toStdString());
+    } catch (const std::exception &e) {
+        // Обработка исключений
+        std::cerr << "Ошибка при обновлении данных: " << e.what() << std::endl;
+        QMessageBox::warning(this, "Ошибка", "Не удалось обновить данные: " + QString::fromStdString(e.what()));
+    }
+
+    // Обновляем отображение значений в таблице
+    updateTableDisplay();
+}
+
+private:
+void updateTableDisplay() {
+    // Получаем информацию о типах столбцов
+    QStringList booleanColumns = getBooleanColumns();
+
+    for (int row = 0; row < tableWidget->rowCount(); ++row) {
+        for (int column = 0; column < tableWidget->columnCount(); ++column) {
+            QTableWidgetItem *item = tableWidget->item(row, column);
+            if (item) {
+                QString columnName = getColumnName(column);
+                QString value = item->text();
+
+                // Проверяем, является ли текущий столбец булевым
+                if (booleanColumns.contains(columnName)) {
+                    if (value == "t") {
+                        item->setText("Да"); // Заменяем 't' на "Да"
+                    } else if (value == "f") {
+                        item->setText("Нет"); // Заменяем 'f' на "Нет"
+                    }
+                }
+            }
+        }
+    }
+}*/
+

@@ -410,6 +410,7 @@ D:/CLionProjects/Database_1/cmake-build-debug/Lab6_autogen/EWIEGA46WW/moc_mainwi
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include/stddef.h \
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include/stdint.h \
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include/syslimits.h \
+  D:/CLionProjects/Database_1/DataBaseHandler.h \
   D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/include/pqxx/config-public-compiler.h \
   D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/array.hxx \
   D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/binarystring.hxx \

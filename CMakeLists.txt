@@ -12,7 +12,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-add_executable(Lab6 Lab6.cpp mainwindow.cpp mainwindow.h mainwindow.ui)
+add_executable(Lab6 Lab6.cpp mainwindow.cpp mainwindow.h mainwindow.ui DataBaseHandler.cpp DataBaseHandler.h)
 
 add_subdirectory(libpqxx-7.9.2 build-pqxx)
 

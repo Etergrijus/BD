@@ -413,6 +413,7 @@ D:/CLionProjects/Database_1/mainwindow.h
  mdp:C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include/stddef.h
  mdp:C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include/stdint.h
  mdp:C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include/syslimits.h
+ mdp:D:/CLionProjects/Database_1/DataBaseHandler.h
  mdp:D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/include/pqxx/config-public-compiler.h
  mdp:D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/array.hxx
  mdp:D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/binarystring.hxx
@@ -469,6 +470,8 @@ D:/CLionProjects/Database_1/mainwindow.h
  mdp:D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/util.hxx
  mdp:D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/version.hxx
  mdp:D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/zview.hxx
+D:/CLionProjects/Database_1/DataBaseHandler.cpp
 D:/CLionProjects/Database_1/Lab6.cpp
 D:/CLionProjects/Database_1/mainwindow.cpp
  uic:ui_MainWindow.h
+D:/CLionProjects/Database_1/DataBaseHandler.h
