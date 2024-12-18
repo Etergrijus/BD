@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QVBoxLayout>
 #include <QTableWidget>
+#include <QPushButton>
 
 #include "DataBaseHandler.h"
 
@@ -46,13 +47,9 @@ private:
                   "JOIN contact_details cd on cd.id = t.contact_details_id;",{"ID", "Age", "Marital Status", "Phone",
                                                                               "FCs", "Flat Number", "Flat Owner"}}},
 
-             {6, {"SELECT td.id,\n"
-                  "t.id,\n"
-                  "td.water_debt_size,\n"
-                  "td.gas_debt_size,\n"
-                  "td.electricity_debt_size\n"
-                  "FROM total_debts td\n"
-                  "JOIN tenants t on t.id = td.tenant_id;",{"ID", "Tenant ID", "Water Debt Size",
+             {6, {"SELECT td.id, cd.fcs, td.water_debt_size, td.gas_debt_size, td.electricity_debt_size\n"
+                  "FROM total_debts AS td JOIN tenants t on td.tenant_id = t.id\n"
+                  "JOIN contact_details cd on cd.id = t.contact_details_id;", {"ID", "FCs", "Water Debt Size",
                                                             "Gas Debt Size", "Electricity Debt Size"}}},
 
              {7, {"SELECT r.id, r.urgency, r.description, ho.address, r.work_title\n"
@@ -105,13 +102,35 @@ private:
 
              {5, {"id", "age", "marital_status", "phone", "fcs", "flat_number", "flat_owner"}},
 
-             {6, {"id", "tenant_id", "water_debt_size", "gas_debt_size", "electricity_debt_size"}},
+             {6, {"id", "fcs", "water_debt_size", "gas_debt_size", "electricity_debt_size"}},
 
-             {7, {"id", "urgency", "description", "address", "work_title"}},
+             {7, {"address", "work_title"}},
 
              {8, {"executor_id", "total_seasons"}},
 
              {9, {"id", "tenant_id", "water_debt_size", "gas_debt_size", "electricity_debt_size"}}
+    };
+
+    std::map<int, QStringList> joinedColumns = {
+            {0, {}},
+
+            {1, {}},
+
+            {2, {"phone", "fcs"}},
+
+            {3, {"season_number"}},
+
+            {4, {}},
+
+            {5, {"phone", "fcs"}},
+
+            {6, {"fcs"}},
+
+            {7, {"id", "urgency", "description", "address", "work_title"}},
+
+            {8, {"executor_id", "total_seasons"}},
+
+            {9, {"id", "tenant_id", "water_debt_size", "gas_debt_size", "electricity_debt_size"}}
     };
 
 
@@ -123,13 +142,17 @@ private:
     QTableWidget *table;
     QVBoxLayout *mainLayout;
 
+    QPushButton *addingButton;
+    QPushButton *deletingButton;
+
     int tableIndex;
     QString savedItemText;
 
-    QStringList getPrimaryKeys();
+    QStringList getPrimaryKeysCols();
 
     QStringList getBoolCols();
-    //void makeTableLocked(std::vector<int> &cols);
+
+    void makeTableDerived(QStringList &cols);
 
 private slots:
 
@@ -138,6 +161,10 @@ private slots:
     void onItemDoubleClick(QTableWidgetItem *item);
 
     void updateDataBase(QTableWidgetItem *item);
+
+    void deleteRows();
+
+    void addRow();
 };
 
 

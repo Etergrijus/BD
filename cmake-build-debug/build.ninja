@@ -115,6 +115,14 @@ build CMakeFiles/Lab6.dir/DataBaseHandler.cpp.obj: CXX_COMPILER__Lab6_Debug D$:/
   OBJECT_DIR = CMakeFiles\Lab6.dir
   OBJECT_FILE_DIR = CMakeFiles\Lab6.dir
 
+build CMakeFiles/Lab6.dir/SuggestionWidget.cpp.obj: CXX_COMPILER__Lab6_Debug D$:/CLionProjects/Database_1/SuggestionWidget.cpp || cmake_object_order_depends_target_Lab6
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEP_FILE = CMakeFiles\Lab6.dir\SuggestionWidget.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
+  INCLUDES = -ID:/CLionProjects/Database_1/cmake-build-debug -ID:/CLionProjects/Database_1 -ID:/CLionProjects/Database_1/cmake-build-debug/Lab6_autogen/include -ID:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/include -ID:/CLionProjects/Database_1/libpqxx-7.9.2/include -isystem C:/Qt/6.7.2/mingw_64/include/QtCore -isystem C:/Qt/6.7.2/mingw_64/include -isystem C:/Qt/6.7.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.7.2/mingw_64/include/QtGui -isystem C:/Qt/6.7.2/mingw_64/include/QtWidgets
+  OBJECT_DIR = CMakeFiles\Lab6.dir
+  OBJECT_FILE_DIR = CMakeFiles\Lab6.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Lab6
@@ -123,7 +131,7 @@ build CMakeFiles/Lab6.dir/DataBaseHandler.cpp.obj: CXX_COMPILER__Lab6_Debug D$:/
 #############################################
 # Link the executable Lab6.exe
 
-build Lab6.exe: CXX_EXECUTABLE_LINKER__Lab6_Debug CMakeFiles/Lab6.dir/Lab6_autogen/mocs_compilation.cpp.obj CMakeFiles/Lab6.dir/Lab6.cpp.obj CMakeFiles/Lab6.dir/mainwindow.cpp.obj CMakeFiles/Lab6.dir/DataBaseHandler.cpp.obj | C$:/Qt/6.7.2/mingw_64/lib/libQt6Widgets.a build-pqxx/src/libpqxx.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Core.a C$:/Program$ Files/PostgreSQL/16/lib/libpq.lib || Lab6_autogen Lab6_autogen_timestamp_deps build-pqxx/src/libpqxx.a
+build Lab6.exe: CXX_EXECUTABLE_LINKER__Lab6_Debug CMakeFiles/Lab6.dir/Lab6_autogen/mocs_compilation.cpp.obj CMakeFiles/Lab6.dir/Lab6.cpp.obj CMakeFiles/Lab6.dir/mainwindow.cpp.obj CMakeFiles/Lab6.dir/DataBaseHandler.cpp.obj CMakeFiles/Lab6.dir/SuggestionWidget.cpp.obj | C$:/Qt/6.7.2/mingw_64/lib/libQt6Widgets.a build-pqxx/src/libpqxx.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Core.a C$:/Program$ Files/PostgreSQL/16/lib/libpq.lib || Lab6_autogen Lab6_autogen_timestamp_deps build-pqxx/src/libpqxx.a
   FLAGS = -g
   LINK_LIBRARIES = C:/Qt/6.7.2/mingw_64/lib/libQt6Widgets.a  build-pqxx/src/libpqxx.a  C:/Qt/6.7.2/mingw_64/lib/libQt6Gui.a  C:/Qt/6.7.2/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -ld3d11  -ldxgi  -ldxguid  -ld3d12  "C:/Program Files/PostgreSQL/16/lib/libpq.lib"  -lwsock32  -lws2_32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Lab6.dir
@@ -248,7 +256,7 @@ build Lab6_autogen/timestamp Lab6_autogen/mocs_compilation.cpp | ${cmake_ninja_w
 #############################################
 # Phony custom command for CMakeFiles\Lab6_autogen_timestamp_deps
 
-build CMakeFiles/Lab6_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/Lab6_autogen_timestamp_deps: phony C$:/Qt/6.7.2/mingw_64/./bin/moc.exe C$:/Qt/6.7.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.7.2/mingw_64/./bin/uic.exe C$:/Qt/6.7.2/mingw_64/lib/libQt6Core.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Widgets.a build-pqxx/src/libpqxx.a || build-pqxx/src/libpqxx.a build-pqxx/src/pqxx_autogen build-pqxx/src/pqxx_autogen_timestamp_deps
+build CMakeFiles/Lab6_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/Lab6_autogen_timestamp_deps: phony C$:/Qt/6.7.2/mingw_64/./bin/moc.exe C$:/Qt/6.7.2/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.7.2/mingw_64/./bin/uic.exe C$:/Qt/6.7.2/mingw_64/lib/libQt6Core.a build-pqxx/src/libpqxx.a || build-pqxx/src/libpqxx.a build-pqxx/src/pqxx_autogen build-pqxx/src/pqxx_autogen_timestamp_deps
 
 
 #############################################

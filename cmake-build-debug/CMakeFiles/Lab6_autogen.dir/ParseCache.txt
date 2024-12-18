@@ -152,9 +152,11 @@ D:/CLionProjects/Database_1/mainwindow.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs_win.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/QComboBox
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/QMainWindow
+ mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/QPushButton
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/QTableWidget
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/QVBoxLayout
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/QWidget
+ mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractbutton.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractitemdelegate.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractitemview.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractscrollarea.h
@@ -167,6 +169,7 @@ D:/CLionProjects/Database_1/mainwindow.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlayout.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlayoutitem.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qmainwindow.h
+ mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qpushbutton.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qrubberband.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qsizepolicy.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qslider.h
@@ -470,8 +473,8 @@ D:/CLionProjects/Database_1/mainwindow.h
  mdp:D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/util.hxx
  mdp:D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/version.hxx
  mdp:D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/zview.hxx
-D:/CLionProjects/Database_1/DataBaseHandler.cpp
 D:/CLionProjects/Database_1/Lab6.cpp
+D:/CLionProjects/Database_1/DataBaseHandler.cpp
 D:/CLionProjects/Database_1/mainwindow.cpp
  uic:ui_MainWindow.h
 D:/CLionProjects/Database_1/DataBaseHandler.h

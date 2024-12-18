@@ -13,9 +13,6 @@ public:
 
     pqxx::result selectPrintQuery(const std::string& query);
 
-    template<typename T>
-    auto makeQuery();
-
 private:
     pqxx::connection c;
 };

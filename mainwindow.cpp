@@ -28,9 +28,22 @@ MainWindow::MainWindow(const std::string& dataBaseParams, QWidget *parent) :
     comboBox->setPlaceholderText("Выберите таблицу из списка");
     comboBox->setFixedSize(400, 60);
 
+    deletingButton = new QPushButton(this);
+    deletingButton->setFixedSize(60, 60);
+    deletingButton->setIcon(QIcon(R"(D:\CLionProjects\Database_1\Icons\Delete.png)"));
+    deletingButton->setIconSize(deletingButton->size());
+    deletingButton->setStyleSheet("QPushButton {border : 4px solid black}");
+    connect(deletingButton, &QPushButton::clicked, this, &MainWindow::deleteRows);
+
+    auto upperLayout = new QHBoxLayout;
+    upperLayout->addStretch();
+    upperLayout->addWidget(comboBox);
+    upperLayout->addWidget(deletingButton);
+
+    upperLayout->addStretch();
+
     mainLayout = new QVBoxLayout(mainWidget);
-    mainLayout->addWidget(comboBox, 0);
-    mainLayout->setAlignment(comboBox,Qt::AlignHCenter | Qt::AlignTop);
+    mainLayout->addLayout(upperLayout, 1);
 
     connect(comboBox, &QComboBox::currentIndexChanged, this,
             [this] () {MainWindow::makeTable(comboBox->currentIndex());});
@@ -50,6 +63,16 @@ MainWindow::MainWindow(const std::string& dataBaseParams, QWidget *parent) :
     scrollArea->setMinimumSize(680, 400);
     scrollArea->setWidget(table);
     mainLayout->addWidget(scrollArea, 3);
+
+
+    addingButton = new QPushButton(this);
+    addingButton->setFixedSize(60, 60);
+    addingButton->setIcon(QIcon(R"(D:\CLionProjects\Database_1\Icons\Add.png)"));
+    addingButton->setIconSize(deletingButton->size());
+    addingButton->setStyleSheet("QPushButton {border : 4px solid black}");
+    connect(addingButton, &QPushButton::clicked, this, &MainWindow::addRow);
+    mainLayout->addWidget(addingButton, 1, Qt::AlignHCenter);
+
     this->setLayout(mainLayout);
 }
 
@@ -57,7 +80,7 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-QStringList MainWindow::getPrimaryKeys() {
+QStringList MainWindow::getPrimaryKeysCols() {
     QStringList primaryKeysCols;
 
     std::string queryPrimaryKeys = "SELECT kcu.column_name\n"
@@ -90,13 +113,25 @@ QStringList MainWindow::getBoolCols() {
     return booleanColumns;
 }
 
+void MainWindow::makeTableDerived(QStringList &cols) {
+    for (auto &i : joinedColumns[tableIndex])
+        cols.append(i);
+    deletingButton->hide();
+    addingButton->hide();
+}
+
 void MainWindow::makeTable(int index) {
+    //table->disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::updateDataBase);
+    bool wasBlocked = table->blockSignals(true);
+    deletingButton->show();
+    addingButton->show();
+    //table->setRowCount(0);
+
     tableIndex = index;
 
     table->setColumnCount(queryInfo[tableIndex].second.size());
     table->setHorizontalHeaderLabels(queryInfo[tableIndex].second);
 
-    //auto r = w.exec(queryInfo[tableIndex].first);
     auto r = db.selectPrintQuery(queryInfo[tableIndex].first);
     table->setRowCount(r.size());
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -105,14 +140,16 @@ void MainWindow::makeTable(int index) {
     for (int rowNum = 0; rowNum < table->rowCount(); rowNum++) {
         pqxx::row row = r[rowNum];
 
-        auto lockedCols = getPrimaryKeys();
+        auto lockedCols = getPrimaryKeysCols();
         //Если первичные ключи не найдены - мы считаем данную
         //таблицу таблицей производного запроса. Такие таблицы нельзя изменять,
         //они зависят от основных таблиц БД
-/*        if (lockedCols.empty()) {
-            for (auto i = 0; i < row.size(); i++)
-                lockedCols.push_back(i);
-        }*/
+        if (joinedColumns[tableIndex].size() == queryInfo[tableIndex].second.size())
+            makeTableDerived(lockedCols);
+        else {
+            for (auto &i : joinedColumns[tableIndex])
+                lockedCols.append(i);
+        }
 
         auto boolCols = getBoolCols();
 
@@ -150,6 +187,9 @@ void MainWindow::makeTable(int index) {
             table->setItem(rowNum, colNum, item);
         }
     }
+
+    //connect(table, &QTableWidget::itemChanged, this, &MainWindow::updateDataBase);
+    table->blockSignals(wasBlocked);
 }
 
 void MainWindow::onItemDoubleClick(QTableWidgetItem *item) {
@@ -157,118 +197,116 @@ void MainWindow::onItemDoubleClick(QTableWidgetItem *item) {
 }
 
 void MainWindow::updateDataBase(QTableWidgetItem *item) {
-    /*pqxx::work txn(c);
-
     int row = item->row();
     int col = item->column();
     QString newValue = item->text();
 
     QString id = table->item(row, 0)->text();
-    QString columnName = queryInfo[tableIndex].second[col];
+    QString idColName = columnMatching[tableIndex][0];
+    QString columnName = columnMatching[tableIndex][col];
 
     bool isNumeric;
+    bool isIdColNumeric;
     int intNewValue = newValue.toInt(&isNumeric);
+    intNewValue = id.toInt(&isIdColNumeric);
 
     QString query;
     try {
         if (newValue == "True" || newValue == "true")
-            query = QString("UPDATE %1 SET %2 = TRUE WHERE id = %3").arg(
-                    QString::fromStdString(codesOfTables[tableIndex]), columnName, id);
+            query = QString("UPDATE %1 SET %2 = TRUE WHERE %3 = %4").arg(
+                    QString::fromStdString(codesOfTables[tableIndex]), columnName, idColName, id);
         else if (newValue == "False" || newValue ==  "false")
-            query = QString("UPDATE %1 SET %2 = FALSE WHERE id = %3").arg(
-                    QString::fromStdString(codesOfTables[tableIndex]), columnName, id);
+            query = QString("UPDATE %1 SET %2 = FALSE WHERE %3 = %4").arg(
+                    QString::fromStdString(codesOfTables[tableIndex]), columnName, idColName, id);
         else if (isNumeric)
-            query = QString("UPDATE %1 SET %2 = %3 WHERE id = %4").arg(
-                    QString::fromStdString(codesOfTables[tableIndex]), columnName, newValue, id);
+            query = QString("UPDATE %1 SET %2 = %3 WHERE %4 = %5").arg(
+                    QString::fromStdString(codesOfTables[tableIndex]), columnName, newValue, idColName, id);
         else
-            query = QString("UPDATE %1 SET %2 = %3 WHERE id = %4").arg(
-                    QString::fromStdString(codesOfTables[tableIndex]), columnName, newValue, id);
+            query = QString("UPDATE %1 SET %2 = '%3' WHERE %4 = %5").arg(
+                    QString::fromStdString(codesOfTables[tableIndex]), columnName, newValue, idColName, id);
 
-        txn.exec(query.toStdString());
-        txn.commit();
+        if (!isIdColNumeric) {
+            query.insert(std::distance(query.begin(), query.end()  - id.size()), "'");
+            query.insert(std::distance(query.begin(), query.end()), "'");
+        }
+
+        db.selectPrintQuery(query.toStdString());
     } catch (const std::exception &e) {
-        // Обработка исключений
-        //std::cerr << "Ошибка при обновлении данных: " << e.what() << std::endl;
-        txn.abort();
         item->setText(savedItemText);
-        QMessageBox::warning(this, "Ошибка", "Не удалось обновить данные: \n" + QString::fromStdString(e.what()));
-    }*/
-
-}
-
-
-
-/*
-int row = item->row();
-int column = item->column();
-QString newValue = item->text();
-
-// Предположим, что у нас есть уникальный идентификатор в первой колонке
-QString id = tableWidget->item(row, 0)->text();
-QString columnName = getColumnName(column); // Получаем имя столбца
-
-QString query;
-
-private slots:
-void onItemChanged(QTableWidgetItem *item) {
-    int row = item->row();
-    int column = item->column();
-    QString newValue = item->text();
-
-    // Предположим, что у нас есть уникальный идентификатор в первой колонке
-    QString id = tableWidget->item(row, 0)->text();
-    QString columnName = getColumnName(column); // Получаем имя столбца
-
-    QString query;
-
-    // Проверяем, является ли новое значение числом
-    bool isNumeric;
-    int intValue = newValue.toInt(&isNumeric); // Попробуем преобразовать в целое число
-
-    try {
-        if (newValue == "true" || newValue == "1") {
-            query = QString("UPDATE tenants SET %1 = TRUE WHERE id = %2").arg(columnName, id);
-        } else if (newValue == "false" || newValue == "0") {
-            query = QString("UPDATE tenants SET %1 = FALSE WHERE id = %2").arg(columnName, id);
-        } else if (isNumeric) {
-            query = QString("UPDATE tenants SET %1 = %2 WHERE id = %3").arg(columnName, newValue, id);
-        } else {
-            query = QString("UPDATE tenants SET %1 = '%2' WHERE id = %3").arg(columnName, newValue, id);
-        }
-
-        dbManager.updateData(query.toStdString());
-    } catch (const std::exception &e) {
-        // Обработка исключений
-        std::cerr << "Ошибка при обновлении данных: " << e.what() << std::endl;
-        QMessageBox::warning(this, "Ошибка", "Не удалось обновить данные: " + QString::fromStdString(e.what()));
+        QMessageBox::critical(this, "Ошибка", "Не удалось обновить данные: \n" +
+        QString::fromStdString(e.what()));
     }
-
-    // Обновляем отображение значений в таблице
-    updateTableDisplay();
 }
 
-private:
-void updateTableDisplay() {
-    // Получаем информацию о типах столбцов
-    QStringList booleanColumns = getBooleanColumns();
+void MainWindow::deleteRows() {
+    QModelIndexList selectedRows = table->selectionModel()->selectedRows();
 
-    for (int row = 0; row < tableWidget->rowCount(); ++row) {
-        for (int column = 0; column < tableWidget->columnCount(); ++column) {
-            QTableWidgetItem *item = tableWidget->item(row, column);
-            if (item) {
-                QString columnName = getColumnName(column);
-                QString value = item->text();
+    while (!selectedRows.empty()) {
+        QString id = table->item(selectedRows[0].row(), 0)->text();
+        QString idColName = columnMatching[tableIndex][0];
 
-                // Проверяем, является ли текущий столбец булевым
-                if (booleanColumns.contains(columnName)) {
-                    if (value == "t") {
-                        item->setText("Да"); // Заменяем 't' на "Да"
-                    } else if (value == "f") {
-                        item->setText("Нет"); // Заменяем 'f' на "Нет"
-                    }
-                }
+        bool isIdColNumeric;
+        int intNewValue = id.toInt(&isIdColNumeric);
+
+        QString query;
+        try {
+            query = QString("DELETE FROM %1 WHERE %2 = %3").arg(
+                    QString::fromStdString(codesOfTables[tableIndex]), idColName, id);
+            if (!isIdColNumeric) {
+                query.insert(std::distance(query.begin(), query.end() - id.size()), "'");
+                query.insert(std::distance(query.begin(), query.end()), "'");
             }
+
+            db.selectPrintQuery(query.toStdString());
+            table->removeRow(selectedRows[0].row());
+            selectedRows = table->selectionModel()->selectedRows();
+        } catch (const std::exception &e) {
+            QMessageBox::critical(this, "Ошибка", "Не удалось удалить данные: \n" +
+                                                  QString::fromStdString(e.what()));
         }
     }
-}*/
+}
 
+void MainWindow::addRow() {
+    bool wasBlocked = table->blockSignals(true);
+
+    auto nRows = table->rowCount();
+    table->setRowCount(nRows + 1);
+    for (auto i = 0; i < table->columnCount(); i++) {
+        auto item = new QTableWidgetItem("");
+        item->setTextAlignment(Qt::AlignCenter);
+        table->setItem(nRows, i, item);
+    }
+
+    auto primaryKeys = getPrimaryKeysCols();
+    for (auto i = 0; i < table->columnCount(); i++)
+        if (primaryKeys.contains(columnMatching[tableIndex][i]))
+            table->openPersistentEditor(table->item(nRows, i));
+    
+
+    table->blockSignals(wasBlocked);
+
+
+
+    if (!joinedColumns[tableIndex].empty()) {
+        auto query = "SELECT\n"
+                     "    kcu.column_name,\n"
+                     "    ccu.table_name AS referenced_table_name,\n"
+                     "FROM\n"
+                     "    information_schema.table_constraints AS tc\n"
+                     "JOIN\n"
+                     "    information_schema.key_column_usage AS kcu\n"
+                     "    ON tc.constraint_name = kcu.constraint_name\n"
+                     "    AND tc.table_schema = kcu.table_schema\n"
+                     "JOIN\n"
+                     "    information_schema.referential_constraints AS rc\n"
+                     "    ON tc.constraint_name = rc.constraint_name\n"
+                     "    AND tc.table_schema = rc.constraint_schema\n"
+                     "JOIN\n"
+                     "    information_schema.constraint_column_usage AS ccu\n"
+                     "    ON rc.unique_constraint_name = ccu.constraint_name\n"
+                     "WHERE\n"
+                     "    tc.constraint_type = 'FOREIGN KEY'\n"
+                     "    AND tc.table_name = '" + codesOfTables[tableIndex] + "'";
+    }
+}
