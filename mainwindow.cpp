@@ -8,7 +8,7 @@
 #include "mainwindow.h"
 #include "ui_MainWindow.h"
 
-MainWindow::MainWindow(const std::string& dataBaseParams, QWidget *parent) :
+MainWindow::MainWindow(const std::string &dataBaseParams, QWidget *parent) :
         QMainWindow(parent), ui(new Ui::MainWindow), db(dataBaseParams) {
     ui->setupUi(this);
 
@@ -46,7 +46,7 @@ MainWindow::MainWindow(const std::string& dataBaseParams, QWidget *parent) :
     mainLayout->addLayout(upperLayout, 1);
 
     connect(comboBox, &QComboBox::currentIndexChanged, this,
-            [this] () {MainWindow::makeTable(comboBox->currentIndex());});
+            [this]() { MainWindow::makeTable(comboBox->currentIndex()); });
 
 
     table = new QTableWidget;
@@ -54,9 +54,14 @@ MainWindow::MainWindow(const std::string& dataBaseParams, QWidget *parent) :
                          "QTableWidget::item { border: 1px solid black; }"
                          "QHeaderView::section { background-color: lightgray; }");
     table->setWordWrap(true);
+    table->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    connect(table, &QTableWidget::cellChanged, this, &MainWindow::onCellChanged);
     connect(table, &QTableWidget::itemDoubleClicked, this, &MainWindow::onItemDoubleClick);
     connect(table, &QTableWidget::itemChanged, this, &MainWindow::updateDataBase);
 
+    suggestionWidget = new SuggestionWidget(this);
+    suggestionWidget->hide();
+    connect(suggestionWidget, &SuggestionWidget::suggestionSelected, this, &MainWindow::handleSuggestionSelected);
 
     auto scrollArea = new QScrollArea;
     scrollArea->setWidgetResizable(true);
@@ -74,6 +79,13 @@ MainWindow::MainWindow(const std::string& dataBaseParams, QWidget *parent) :
     mainLayout->addWidget(addingButton, 1, Qt::AlignHCenter);
 
     this->setLayout(mainLayout);
+
+    suggestionTimer = new QTimer(this);
+    suggestionTimer->setSingleShot(true);
+    connect(suggestionTimer, &QTimer::timeout, [this]() {
+        querySuggestions(table->currentItem()->row(), table->currentItem()->column(),
+                         table->item(table->currentItem()->row(), table->currentItem()->column())->text());
+    });
 }
 
 MainWindow::~MainWindow() {
@@ -92,7 +104,7 @@ QStringList MainWindow::getPrimaryKeysCols() {
                                      "ORDER BY kcu.column_name;";
 
     auto r = db.selectPrintQuery(queryPrimaryKeys);
-    r.for_each([&primaryKeysCols] (const std::string& colName) {
+    r.for_each([&primaryKeysCols](const std::string &colName) {
         primaryKeysCols.append(QString::fromStdString(colName));
     });
 
@@ -106,7 +118,7 @@ QStringList MainWindow::getBoolCols() {
                                 "WHERE table_name = '" + codesOfTables[tableIndex] + "' AND data_type = 'boolean'";
 
     auto r = db.selectPrintQuery(boolColsQuery);
-    r.for_each([&booleanColumns] (const std::string& colName) {
+    r.for_each([&booleanColumns](const std::string &colName) {
         booleanColumns.append(QString::fromStdString(colName));
     });
 
@@ -114,7 +126,7 @@ QStringList MainWindow::getBoolCols() {
 }
 
 void MainWindow::makeTableDerived(QStringList &cols) {
-    for (auto &i : joinedColumns[tableIndex])
+    for (auto &i: joinedColumns[tableIndex])
         cols.append(i);
     deletingButton->hide();
     addingButton->hide();
@@ -147,7 +159,7 @@ void MainWindow::makeTable(int index) {
         if (joinedColumns[tableIndex].size() == queryInfo[tableIndex].second.size())
             makeTableDerived(lockedCols);
         else {
-            for (auto &i : joinedColumns[tableIndex])
+            for (auto &i: joinedColumns[tableIndex])
                 lockedCols.append(i);
         }
 
@@ -215,7 +227,7 @@ void MainWindow::updateDataBase(QTableWidgetItem *item) {
         if (newValue == "True" || newValue == "true")
             query = QString("UPDATE %1 SET %2 = TRUE WHERE %3 = %4").arg(
                     QString::fromStdString(codesOfTables[tableIndex]), columnName, idColName, id);
-        else if (newValue == "False" || newValue ==  "false")
+        else if (newValue == "False" || newValue == "false")
             query = QString("UPDATE %1 SET %2 = FALSE WHERE %3 = %4").arg(
                     QString::fromStdString(codesOfTables[tableIndex]), columnName, idColName, id);
         else if (isNumeric)
@@ -226,7 +238,7 @@ void MainWindow::updateDataBase(QTableWidgetItem *item) {
                     QString::fromStdString(codesOfTables[tableIndex]), columnName, newValue, idColName, id);
 
         if (!isIdColNumeric) {
-            query.insert(std::distance(query.begin(), query.end()  - id.size()), "'");
+            query.insert(std::distance(query.begin(), query.end() - id.size()), "'");
             query.insert(std::distance(query.begin(), query.end()), "'");
         }
 
@@ -234,7 +246,7 @@ void MainWindow::updateDataBase(QTableWidgetItem *item) {
     } catch (const std::exception &e) {
         item->setText(savedItemText);
         QMessageBox::critical(this, "Ошибка", "Не удалось обновить данные: \n" +
-        QString::fromStdString(e.what()));
+                                              QString::fromStdString(e.what()));
     }
 }
 
@@ -282,10 +294,9 @@ void MainWindow::addRow() {
     for (auto i = 0; i < table->columnCount(); i++)
         if (primaryKeys.contains(columnMatching[tableIndex][i]))
             table->openPersistentEditor(table->item(nRows, i));
-    
+
 
     table->blockSignals(wasBlocked);
-
 
 
     if (!joinedColumns[tableIndex].empty()) {
@@ -309,4 +320,77 @@ void MainWindow::addRow() {
                      "    tc.constraint_type = 'FOREIGN KEY'\n"
                      "    AND tc.table_name = '" + codesOfTables[tableIndex] + "'";
     }
+}
+
+void MainWindow::onCellChanged(int row, int column) {
+    if (column != 1) return; // Подсказки только для столбца product_name (индекс 1)
+
+    // Если нет активного виджета в данный момент, установите текущую ячейку
+    if (!suggestionWidget->isVisible()) {
+        /*current_row = row;
+        current_column = column;
+        */suggestionTimer->start(500);
+    } else {
+        // Если окно подсказок уже открыто, перезапускаем таймер
+        /*current_row = row;
+        current_column = column;
+        */suggestionTimer->start(500);
+    }
+}
+
+void MainWindow::querySuggestions(int row, int column, const QString &text) {
+    suggestionTimer->stop();
+
+    if (text.isEmpty()) {
+        suggestionWidget->hide();
+        return;
+    }
+
+    auto id = table->item(row, 0)->text();
+    //auto idColName = columnMatching[tableIndex][0];
+    auto columnName = columnMatching[tableIndex][column];
+
+    bool isNumeric;
+    int intNewValue = text.toInt(&isNumeric);
+
+    QString query;
+    if (isNumeric)
+        query = QString("SELECT DISTINCT %1 FROM %2 WHERE CAST(%1 AS text) ILIKE '" + text + "%';").arg(
+                columnName, QString::fromStdString(codesOfTables[tableIndex]));
+    else
+        query = QString("SELECT DISTINCT %1 FROM %2 WHERE %1 ILIKE '" + text + "%';").arg(
+                columnName, QString::fromStdString(codesOfTables[tableIndex]));
+
+
+    QStringList suggestions;
+    try {
+        auto r = db.selectPrintQuery(query.toStdString());
+        r.for_each([&suggestions](const std::string &suggestion) {
+            suggestions.append(QString::fromStdString(suggestion));
+        });
+    } catch (const std::exception &e) {
+        QMessageBox::critical(this, "Ошибка",
+                              "Ошибка при запросе подсказок:\n" + QString::fromStdString(e.what()));
+    }
+
+    suggestionWidget->setSuggestions(suggestions);
+
+    if (!suggestions.isEmpty()) {
+        QRect cellRect = table->visualRect(table->model()->index(row, column));
+        QPoint globalPos = table->mapToGlobal(cellRect.bottomLeft());
+        suggestionWidget->move(globalPos);
+        suggestionWidget->show();
+
+    } else {
+        suggestionWidget->hide();
+    }
+}
+
+void MainWindow::handleSuggestionSelected(const QString &suggestion) {
+    QTableWidgetItem *item = table->currentItem();
+    if (item) {
+        item->setText(suggestion);
+    };
+
+    suggestionWidget->hide();
 }

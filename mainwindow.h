@@ -7,8 +7,10 @@
 #include <QVBoxLayout>
 #include <QTableWidget>
 #include <QPushButton>
+#include <QTimer>
 
 #include "DataBaseHandler.h"
+#include "SuggestionWidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -145,6 +147,9 @@ private:
     QPushButton *addingButton;
     QPushButton *deletingButton;
 
+    SuggestionWidget *suggestionWidget;
+    QTimer *suggestionTimer;
+
     int tableIndex;
     QString savedItemText;
 
@@ -165,6 +170,12 @@ private slots:
     void deleteRows();
 
     void addRow();
+
+    void onCellChanged(int row, int column); // Обработчик изменения ячейки
+
+    void querySuggestions(int row, int column, const QString& text);
+
+    void handleSuggestionSelected(const QString &suggestion);
 };
 
 

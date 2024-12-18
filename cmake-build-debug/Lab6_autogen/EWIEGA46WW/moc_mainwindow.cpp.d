@@ -1,5 +1,7 @@
 D:/CLionProjects/Database_1/cmake-build-debug/Lab6_autogen/EWIEGA46WW/moc_mainwindow.cpp: D:/CLionProjects/Database_1/mainwindow.h \
   D:/CLionProjects/Database_1/cmake-build-debug/Lab6_autogen/moc_predefs.h \
+  C:/Qt/6.7.2/mingw_64/include/QtCore/QStringList \
+  C:/Qt/6.7.2/mingw_64/include/QtCore/QTimer \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20functional.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20memory.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20type_traits.h \
@@ -14,6 +16,7 @@ D:/CLionProjects/Database_1/cmake-build-debug/Lab6_autogen/EWIEGA46WW/moc_mainwi
   C:/Qt/6.7.2/mingw_64/include/QtCore/qatomic.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qatomic_cxx11.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qbasicatomic.h \
+  C:/Qt/6.7.2/mingw_64/include/QtCore/qbasictimer.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qbindingstorage.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qbytearray.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qbytearrayalgorithms.h \
@@ -105,6 +108,7 @@ D:/CLionProjects/Database_1/cmake-build-debug/Lab6_autogen/EWIEGA46WW/moc_mainwi
   C:/Qt/6.7.2/mingw_64/include/QtCore/qtdeprecationmarkers.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qtenvironmentvariables.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qtextstream.h \
+  C:/Qt/6.7.2/mingw_64/include/QtCore/qtimer.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qtmetamacros.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qtnoop.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qtpreprocessorsupport.h \
@@ -148,6 +152,7 @@ D:/CLionProjects/Database_1/cmake-build-debug/Lab6_autogen/EWIEGA46WW/moc_mainwi
   C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs_win.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/QComboBox \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/QListWidget \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/QMainWindow \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/QPushButton \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/QTableWidget \
@@ -165,6 +170,8 @@ D:/CLionProjects/Database_1/cmake-build-debug/Lab6_autogen/EWIEGA46WW/moc_mainwi
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qgridlayout.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlayout.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlayoutitem.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlistview.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlistwidget.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qmainwindow.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qpushbutton.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qrubberband.h \
@@ -414,6 +421,7 @@ D:/CLionProjects/Database_1/cmake-build-debug/Lab6_autogen/EWIEGA46WW/moc_mainwi
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include/stdint.h \
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include/syslimits.h \
   D:/CLionProjects/Database_1/DataBaseHandler.h \
+  D:/CLionProjects/Database_1/SuggestionWidget.h \
   D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/include/pqxx/config-public-compiler.h \
   D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/array.hxx \
   D:/CLionProjects/Database_1/libpqxx-7.9.2/include/pqxx/binarystring.hxx \
