@@ -1,11 +1,11 @@
 Determining if the function poll exists failed with the following output:
 Change Dir: D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3/bin/ninja/win/ninja.exe cmTC_97182 && [1/2] Building C object CMakeFiles/cmTC_97182.dir/CheckFunctionExists.c.obj
-[2/2] Linking C executable cmTC_97182.exe
-FAILED: cmTC_97182.exe 
-cmd.exe /C "cd . && C:\msys64\mingw64\bin\cc.exe -DCHECK_FUNCTION_EXISTS=poll  CMakeFiles/cmTC_97182.dir/CheckFunctionExists.c.obj -o cmTC_97182.exe -Wl,--out-implib,libcmTC_97182.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
-C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: CMakeFiles/cmTC_97182.dir/CheckFunctionExists.c.obj:CheckFunctionExists.c:(.text+0x15): undefined reference to `poll'
+Run Build Command(s):C:/Program Files/JetBrains/CLion 2022.3/bin/ninja/win/ninja.exe cmTC_f1287 && [1/2] Building C object CMakeFiles/cmTC_f1287.dir/CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_f1287.exe
+FAILED: cmTC_f1287.exe 
+cmd.exe /C "cd . && C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\gcc.exe -DCHECK_FUNCTION_EXISTS=poll  CMakeFiles/cmTC_f1287.dir/CheckFunctionExists.c.obj -o cmTC_f1287.exe -Wl,--out-implib,libcmTC_f1287.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+C:\Program Files\JetBrains\CLion 2022.3\bin\mingw\bin/ld.exe: CMakeFiles/cmTC_f1287.dir/CheckFunctionExists.c.obj:CheckFunctionExists.c:(.text+0x15): undefined reference to `poll'
 collect2.exe: error: ld returned 1 exit status
 ninja: build stopped: subcommand failed.
 

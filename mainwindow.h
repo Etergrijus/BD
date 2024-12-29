@@ -10,7 +10,7 @@
 #include <QTimer>
 
 #include "DataBaseHandler.h"
-#include "SuggestionWidget.h"
+#include "SuggestionLineEdit.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -147,10 +147,11 @@ private:
     QPushButton *addingButton;
     QPushButton *deletingButton;
 
-    SuggestionWidget *suggestionWidget;
-    QTimer *suggestionTimer;
+    //SuggestionWidget *suggestionWidget;
+    //QTimer *suggestionTimer;
 
     int tableIndex;
+
     QString savedItemText;
 
     QStringList getPrimaryKeysCols();
@@ -158,6 +159,8 @@ private:
     QStringList getBoolCols();
 
     void makeTableDerived(QStringList &cols);
+
+    QStringList lockedCols;
 
 private slots:
 
@@ -171,11 +174,15 @@ private slots:
 
     void addRow();
 
-    void onCellChanged(int row, int column); // Обработчик изменения ячейки
+    void onCellDoubleClicked(int row, int col);
 
-    void querySuggestions(int row, int column, const QString& text);
+    void closeEditor(const QString& text);
 
-    void handleSuggestionSelected(const QString &suggestion);
+    //void onCellChanged(int row, int column); // Обработчик изменения ячейки
+
+    //void querySuggestions(int row, int column, const QString& text);
+
+    //void handleSuggestionSelected(const QString &suggestion);
 };
 
 

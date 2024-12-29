@@ -38,7 +38,7 @@
 /* Define to the version of this package. */
 /* #undef PACKAGE_VERSION */
 /* Define if this feature is available. */
-#define PQXX_HAVE_CHARCONV_FLOAT
+/* #undef PQXX_HAVE_CHARCONV_FLOAT */
 /* Define if this feature is available. */
 #define PQXX_HAVE_CHARCONV_INT
 /* Define if this feature is available. */
@@ -72,7 +72,7 @@
 /* Define if this feature is available. */
 #define PQXX_HAVE_STRERROR_S
 /* Define if this feature is available. */
-#define PQXX_HAVE_THREAD_LOCAL
+/* #undef PQXX_HAVE_THREAD_LOCAL */
 /* Define if this feature is available. */
 #define PQXX_HAVE_YEAR_MONTH_DAY
 /* Define to 1 if all of the C90 standard headers exist (not just the ones

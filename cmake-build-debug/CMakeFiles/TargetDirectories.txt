@@ -1,5 +1,6 @@
 D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/Database_1.dir
 D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/Lab6.dir
+D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/Lab7.dir
 D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/package.dir
 D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/package_source.dir
 D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/edit_cache.dir
@@ -10,6 +11,8 @@ D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/install/local.dir
 D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/install/strip.dir
 D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/Lab6_autogen_timestamp_deps.dir
 D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/Lab6_autogen.dir
+D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/Lab7_autogen_timestamp_deps.dir
+D:/CLionProjects/Database_1/cmake-build-debug/CMakeFiles/Lab7_autogen.dir
 D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/CMakeFiles/package.dir
 D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/CMakeFiles/package_source.dir
 D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/CMakeFiles/edit_cache.dir

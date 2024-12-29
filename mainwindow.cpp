@@ -55,13 +55,14 @@ MainWindow::MainWindow(const std::string &dataBaseParams, QWidget *parent) :
                          "QHeaderView::section { background-color: lightgray; }");
     table->setWordWrap(true);
     table->setEditTriggers(QAbstractItemView::AllEditTriggers);
-    connect(table, &QTableWidget::cellChanged, this, &MainWindow::onCellChanged);
+    //connect(table, &QTableWidget::cellChanged, this, &MainWindow::onCellChanged);
     connect(table, &QTableWidget::itemDoubleClicked, this, &MainWindow::onItemDoubleClick);
     connect(table, &QTableWidget::itemChanged, this, &MainWindow::updateDataBase);
+    connect(table, &QTableWidget::cellDoubleClicked, this, &MainWindow::onCellDoubleClicked);
 
-    suggestionWidget = new SuggestionWidget(this);
+/*    suggestionWidget = new SuggestionWidget(this);
     suggestionWidget->hide();
-    connect(suggestionWidget, &SuggestionWidget::suggestionSelected, this, &MainWindow::handleSuggestionSelected);
+    connect(suggestionWidget, &SuggestionWidget::suggestionSelected, this, &MainWindow::handleSuggestionSelected);*/
 
     auto scrollArea = new QScrollArea;
     scrollArea->setWidgetResizable(true);
@@ -80,12 +81,12 @@ MainWindow::MainWindow(const std::string &dataBaseParams, QWidget *parent) :
 
     this->setLayout(mainLayout);
 
-    suggestionTimer = new QTimer(this);
+/*    suggestionTimer = new QTimer(this);
     suggestionTimer->setSingleShot(true);
     connect(suggestionTimer, &QTimer::timeout, [this]() {
         querySuggestions(table->currentItem()->row(), table->currentItem()->column(),
                          table->item(table->currentItem()->row(), table->currentItem()->column())->text());
-    });
+    });*/
 }
 
 MainWindow::~MainWindow() {
@@ -152,7 +153,7 @@ void MainWindow::makeTable(int index) {
     for (int rowNum = 0; rowNum < table->rowCount(); rowNum++) {
         pqxx::row row = r[rowNum];
 
-        auto lockedCols = getPrimaryKeysCols();
+        /*auto */lockedCols = getPrimaryKeysCols();
         //Если первичные ключи не найдены - мы считаем данную
         //таблицу таблицей производного запроса. Такие таблицы нельзя изменять,
         //они зависят от основных таблиц БД
@@ -192,9 +193,11 @@ void MainWindow::makeTable(int index) {
             }
 
             //Проверяем, не является ли столбец соответствующим первичному ключу
-            if (lockedCols.contains(columnMatching[tableIndex][colNum]))
+            if (lockedCols.contains(columnMatching[tableIndex][colNum])) {
                 //Если является - то его делаем read-only
                 item->setFlags(item->flags() ^ Qt::ItemIsEditable);
+                //table->mousePressEvent(nullptr);
+            }
             item->setTextAlignment(Qt::AlignCenter);
             table->setItem(rowNum, colNum, item);
         }
@@ -322,75 +325,21 @@ void MainWindow::addRow() {
     }
 }
 
-void MainWindow::onCellChanged(int row, int column) {
-    if (column != 1) return; // Подсказки только для столбца product_name (индекс 1)
 
-    // Если нет активного виджета в данный момент, установите текущую ячейку
-    if (!suggestionWidget->isVisible()) {
-        /*current_row = row;
-        current_column = column;
-        */suggestionTimer->start(500);
-    } else {
-        // Если окно подсказок уже открыто, перезапускаем таймер
-        /*current_row = row;
-        current_column = column;
-        */suggestionTimer->start(500);
-    }
-}
 
-void MainWindow::querySuggestions(int row, int column, const QString &text) {
-    suggestionTimer->stop();
-
-    if (text.isEmpty()) {
-        suggestionWidget->hide();
+void MainWindow::onCellDoubleClicked(int row, int col) {
+    if (lockedCols.contains(columnMatching[tableIndex][col]))
         return;
-    }
 
-    auto id = table->item(row, 0)->text();
-    //auto idColName = columnMatching[tableIndex][0];
-    auto columnName = columnMatching[tableIndex][column];
-
-    bool isNumeric;
-    int intNewValue = text.toInt(&isNumeric);
-
-    QString query;
-    if (isNumeric)
-        query = QString("SELECT DISTINCT %1 FROM %2 WHERE CAST(%1 AS text) ILIKE '" + text + "%';").arg(
-                columnName, QString::fromStdString(codesOfTables[tableIndex]));
-    else
-        query = QString("SELECT DISTINCT %1 FROM %2 WHERE %1 ILIKE '" + text + "%';").arg(
-                columnName, QString::fromStdString(codesOfTables[tableIndex]));
-
-
-    QStringList suggestions;
-    try {
-        auto r = db.selectPrintQuery(query.toStdString());
-        r.for_each([&suggestions](const std::string &suggestion) {
-            suggestions.append(QString::fromStdString(suggestion));
-        });
-    } catch (const std::exception &e) {
-        QMessageBox::critical(this, "Ошибка",
-                              "Ошибка при запросе подсказок:\n" + QString::fromStdString(e.what()));
-    }
-
-    suggestionWidget->setSuggestions(suggestions);
-
-    if (!suggestions.isEmpty()) {
-        QRect cellRect = table->visualRect(table->model()->index(row, column));
-        QPoint globalPos = table->mapToGlobal(cellRect.bottomLeft());
-        suggestionWidget->move(globalPos);
-        suggestionWidget->show();
-
-    } else {
-        suggestionWidget->hide();
-    }
+    SuggestionLineEdit* lineEdit = new SuggestionLineEdit(QString::fromStdString(codesOfTables[tableIndex]),
+                                                          columnMatching[tableIndex][col], table);
+    lineEdit->setText(table->item(row, col)->text());
+    table->setCellWidget(row, col, lineEdit);
+    lineEdit->setFocus();
+    connect(lineEdit, &SuggestionLineEdit::finished, this, &MainWindow::closeEditor);
 }
 
-void MainWindow::handleSuggestionSelected(const QString &suggestion) {
-    QTableWidgetItem *item = table->currentItem();
-    if (item) {
-        item->setText(suggestion);
-    };
-
-    suggestionWidget->hide();
+void MainWindow::closeEditor(const QString& text) {
+    table->item(table->currentRow(), table->currentColumn())->setText(text);
+    table->setCellWidget(table->currentRow(), table->currentColumn(), nullptr);
 }

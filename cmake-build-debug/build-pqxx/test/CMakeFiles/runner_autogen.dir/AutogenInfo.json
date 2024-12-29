@@ -28,12 +28,13 @@
 		"C:/Program Files/PostgreSQL/16/include/server",
 		"D:/CLionProjects/Database_1/cmake-build-debug/build-pqxx/include",
 		"D:/CLionProjects/Database_1/libpqxx-7.9.2/include",
-		"C:/msys64/mingw64/include/c++/14.1.0",
-		"C:/msys64/mingw64/include/c++/14.1.0/x86_64-w64-mingw32",
-		"C:/msys64/mingw64/include/c++/14.1.0/backward",
-		"C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include",
-		"C:/msys64/mingw64/include",
-		"C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.1.0/include-fixed"
+		"C:/Program Files/JetBrains/CLion 2022.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++",
+		"C:/Program Files/JetBrains/CLion 2022.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32",
+		"C:/Program Files/JetBrains/CLion 2022.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward",
+		"C:/Program Files/JetBrains/CLion 2022.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include",
+		"C:/Program Files/JetBrains/CLion 2022.3/bin/mingw/include",
+		"C:/Program Files/JetBrains/CLion 2022.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed",
+		"C:/Program Files/JetBrains/CLion 2022.3/bin/mingw/x86_64-w64-mingw32/include"
 	],
 	"MOC_MACRO_NAMES" : 
 	[
@@ -48,7 +49,7 @@
 	"MOC_PATH_PREFIX" : false,
 	"MOC_PREDEFS_CMD" : 
 	[
-		"C:/msys64/mingw64/bin/c++.exe",
+		"C:/Program Files/JetBrains/CLion 2022.3/bin/mingw/bin/g++.exe",
 		"-dM",
 		"-E",
 		"-c",
